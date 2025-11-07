@@ -1,0 +1,46 @@
+name: Windows VM Runner
+
+on:
+  workflow_dispatch:
+    inputs:
+      hours:
+        description: 'How many hours to run?'
+        required: true
+        default: '6'
+        type: choice
+        options:
+        - '2'
+        - '4'
+        - '6'
+
+jobs:
+  windows-vm:
+    runs-on: windows-latest
+    timeout-minutes: ${{ fromJSON(github.event.inputs.hours) * 60 }}
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Windows VM
+      run: |
+        Write-Host "🎉 Your FREE Windows VM is running!"
+        Write-Host "📍 VM Type: Windows Server 2022"
+        Write-Host "⏰ Time Remaining: ${{ github.event.inputs.hours }} hours"
+        Write-Host "💻 CPU: 2-core, RAM: 7GB, Storage: 14GB"
+        Write-Host "🌐 Internet: Available"
+        Write-Host "📁 Your files are available in this repository"
+        
+    - name: Install basic software
+      run: |
+        # Chrome install karein
+        winget install --id Google.Chrome -e --accept-package-agreements
+        # Notepad++ install karein
+        winget install --id Notepad++.Notepad++ -e --accept-package-agreements
+        
+    - name: Keep VM running
+      run: |
+        $hours = ${{ github.event.inputs.hours }}
+        $seconds = $hours * 3600
+        Write-Host "VM will run for $hours hours ($seconds seconds)"
+        Start-Sleep -Seconds $seconds
