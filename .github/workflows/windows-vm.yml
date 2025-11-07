@@ -2,21 +2,11 @@ name: Windows VM Runner
 
 on:
   workflow_dispatch:
-    inputs:
-      hours:
-        description: 'How many hours to run?'
-        required: true
-        default: '6'
-        type: choice
-        options:
-          - '2'
-          - '4'
-          - '6'
 
 jobs:
   windows-vm:
     runs-on: windows-latest
-    timeout-minutes: 360  # 6 hours fixed
+    timeout-minutes: 360
     
     steps:
     - name: Checkout repository
@@ -24,21 +14,17 @@ jobs:
       
     - name: Setup Windows VM
       run: |
-        Write-Host "🎉 Your FREE Windows VM is running!"
-        Write-Host "📍 VM Type: Windows Server 2022"
-        Write-Host "⏰ Time Remaining: 6 hours"
-        Write-Host "💻 CPU: 2-core, RAM: 7GB, Storage: 14GB"
-        Write-Host "🌐 Internet: Available"
-        Write-Host "📁 Your files are available in this repository"
+        echo "🎉 Your FREE Windows VM is running!"
+        echo "📍 VM Type: Windows Server 2022"
+        echo "⏰ Time Remaining: 6 hours"
+        echo "💻 CPU: 2-core, RAM: 7GB, Storage: 14GB"
+        echo "🌐 Internet: Available"
         
-    - name: Install basic software
+    - name: Install software
       run: |
-        # Chrome install karein
-        winget install --id Google.Chrome -e --accept-package-agreements
-        # Notepad++ install karein  
-        winget install --id Notepad++.Notepad++ -e --accept-package-agreements
+        winget install Google.Chrome
+        winget install Notepad++.Notepad++
         
     - name: Keep VM running
       run: |
-        Write-Host "VM will run for 6 hours (21600 seconds)"
-        Start-Sleep -Seconds 21600
+        timeout /t 21600
