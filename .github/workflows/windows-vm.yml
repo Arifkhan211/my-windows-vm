@@ -9,14 +9,14 @@ on:
         default: '6'
         type: choice
         options:
-        - '2'
-        - '4'
-        - '6'
+          - '2'
+          - '4'
+          - '6'
 
 jobs:
   windows-vm:
     runs-on: windows-latest
-    timeout-minutes: ${{ fromJSON(github.event.inputs.hours) * 60 }}
+    timeout-minutes: 360  # 6 hours fixed
     
     steps:
     - name: Checkout repository
@@ -26,7 +26,7 @@ jobs:
       run: |
         Write-Host "🎉 Your FREE Windows VM is running!"
         Write-Host "📍 VM Type: Windows Server 2022"
-        Write-Host "⏰ Time Remaining: ${{ github.event.inputs.hours }} hours"
+        Write-Host "⏰ Time Remaining: 6 hours"
         Write-Host "💻 CPU: 2-core, RAM: 7GB, Storage: 14GB"
         Write-Host "🌐 Internet: Available"
         Write-Host "📁 Your files are available in this repository"
@@ -35,12 +35,10 @@ jobs:
       run: |
         # Chrome install karein
         winget install --id Google.Chrome -e --accept-package-agreements
-        # Notepad++ install karein
+        # Notepad++ install karein  
         winget install --id Notepad++.Notepad++ -e --accept-package-agreements
         
     - name: Keep VM running
       run: |
-        $hours = ${{ github.event.inputs.hours }}
-        $seconds = $hours * 3600
-        Write-Host "VM will run for $hours hours ($seconds seconds)"
-        Start-Sleep -Seconds $seconds
+        Write-Host "VM will run for 6 hours (21600 seconds)"
+        Start-Sleep -Seconds 21600
