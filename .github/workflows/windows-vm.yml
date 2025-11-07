@@ -19,12 +19,18 @@ jobs:
         echo "⏰ Time Remaining: 6 hours"
         echo "💻 CPU: 2-core, RAM: 7GB, Storage: 14GB"
         echo "🌐 Internet: Available"
+        echo "📁 Your files are available in this repository"
         
-    - name: Install software
+    - name: Download Chrome manually
       run: |
-        winget install Google.Chrome
-        winget install Notepad++.Notepad++
+        # Chrome direct download karein
+        Invoke-WebRequest -Uri "https://dl.google.com/chrome/install/latest/chrome_installer.exe" -OutFile "chrome_installer.exe"
+        Start-Process -FilePath "chrome_installer.exe" -ArgumentList "/silent", "/install" -Wait
         
     - name: Keep VM running
       run: |
-        timeout /t 21600
+        echo "🚀 VM is ready to use!"
+        echo "📝 You can run commands in this workflow"
+        echo "⏰ VM will auto-stop after 6 hours"
+        # Keep running for 6 hours
+        Start-Sleep -Seconds 21600
